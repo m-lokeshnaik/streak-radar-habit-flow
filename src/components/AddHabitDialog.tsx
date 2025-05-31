@@ -27,64 +27,64 @@ const AddHabitDialog: React.FC<AddHabitDialogProps> = ({ onAddHabit }) => {
   };
 
   const categories = [
-    { value: 'health', label: 'Health' },
-    { value: 'productivity', label: 'Productivity' },
-    { value: 'learning', label: 'Learning' },
-    { value: 'mindfulness', label: 'Mindfulness' },
-    { value: 'social', label: 'Social' },
-    { value: 'creative', label: 'Creative' }
+    { value: 'health', label: 'Health', emoji: '🌱' },
+    { value: 'productivity', label: 'Productivity', emoji: '⚡' },
+    { value: 'learning', label: 'Learning', emoji: '📚' },
+    { value: 'mindfulness', label: 'Mindfulness', emoji: '🧘' },
+    { value: 'social', label: 'Social', emoji: '💝' },
+    { value: 'creative', label: 'Creative', emoji: '🎨' }
   ];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-gray-900 hover:bg-gray-800 text-white border-gray-900">
-          <Plus size={16} className="mr-2" />
+        <Button className="bg-gradient-to-r from-pastel-coral to-pastel-pink hover:from-pastel-pink hover:to-pastel-coral text-white border-none rounded-2xl px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+          <Plus size={18} className="mr-2" />
           Add Habit
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md border-2 border-gray-200">
+      <DialogContent className="sm:max-w-md border-2 border-pastel-gray-medium/30 rounded-2xl bg-white shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="text-gray-900">Add New Habit</DialogTitle>
+          <DialogTitle className="text-gray-800 text-xl font-bold">Add New Habit ✨</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="habit-name" className="text-gray-700">Habit Name</Label>
+        <form onSubmit={handleSubmit} className="space-y-6 mt-4">
+          <div className="space-y-3">
+            <Label htmlFor="habit-name" className="text-gray-700 font-semibold">Habit Name</Label>
             <Input
               id="habit-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g., Drink 8 glasses of water"
-              className="border-gray-300 focus:border-gray-500"
+              placeholder="e.g., Drink 8 glasses of water 💧"
+              className="border-pastel-gray-medium/40 focus:border-pastel-coral rounded-xl py-3 px-4 font-medium"
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="habit-category" className="text-gray-700">Category</Label>
+          <div className="space-y-3">
+            <Label htmlFor="habit-category" className="text-gray-700 font-semibold">Category</Label>
             <Select value={category} onValueChange={(value) => setCategory(value as HabitCategory)}>
-              <SelectTrigger className="border-gray-300 focus:border-gray-500">
+              <SelectTrigger className="border-pastel-gray-medium/40 focus:border-pastel-coral rounded-xl py-3 px-4">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-xl border-pastel-gray-medium/30">
                 {categories.map(cat => (
-                  <SelectItem key={cat.value} value={cat.value}>
-                    {cat.label}
+                  <SelectItem key={cat.value} value={cat.value} className="rounded-lg font-medium">
+                    {cat.emoji} {cat.label}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-          <div className="flex gap-2 pt-4">
+          <div className="flex gap-3 pt-4">
             <Button 
               type="button" 
               variant="outline" 
               onClick={() => setOpen(false)}
-              className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="flex-1 border-pastel-gray-medium/40 text-gray-700 hover:bg-gray-50 rounded-xl py-3 font-semibold"
             >
               Cancel
             </Button>
             <Button 
               type="submit"
-              className="flex-1 bg-gray-900 hover:bg-gray-800 text-white"
+              className="flex-1 bg-gradient-to-r from-pastel-coral to-pastel-pink hover:from-pastel-pink hover:to-pastel-coral text-white rounded-xl py-3 font-semibold shadow-lg"
             >
               Add Habit
             </Button>

@@ -125,62 +125,64 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto p-6">
+    <div className="min-h-screen bg-gradient-to-br from-pastel-blue/20 via-white to-pastel-pink/20">
+      <div className="max-w-6xl mx-auto p-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Habit Tracker</h1>
-            <p className="text-gray-600">Build better habits, one day at a time</p>
+        <div className="flex items-center justify-between mb-10">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-pastel-coral to-pastel-pink bg-clip-text text-transparent">
+              GoalFlow ✨
+            </h1>
+            <p className="text-gray-600 text-lg font-medium">Build better habits, one day at a time</p>
           </div>
           <AddHabitDialog onAddHabit={addHabit} />
         </div>
 
         {/* Main Content */}
-        <Tabs defaultValue="today" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-gray-100 border border-gray-200">
+        <Tabs defaultValue="today" className="space-y-8">
+          <TabsList className="grid w-full grid-cols-4 bg-white/80 backdrop-blur-sm border-2 border-pastel-gray-medium/30 rounded-2xl p-2 shadow-lg">
             <TabsTrigger 
               value="today" 
-              className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-gray-900"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-pastel-coral data-[state=active]:to-pastel-pink data-[state=active]:text-white data-[state=active]:shadow-lg"
             >
-              <CheckSquare size={16} />
+              <CheckSquare size={18} />
               Today
             </TabsTrigger>
             <TabsTrigger 
               value="monthly" 
-              className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-gray-900"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-pastel-coral data-[state=active]:to-pastel-pink data-[state=active]:text-white data-[state=active]:shadow-lg"
             >
-              <Calendar size={16} />
+              <Calendar size={18} />
               Monthly
             </TabsTrigger>
             <TabsTrigger 
               value="insights" 
-              className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-gray-900"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-pastel-coral data-[state=active]:to-pastel-pink data-[state=active]:text-white data-[state=active]:shadow-lg"
             >
-              <BarChart3 size={16} />
+              <BarChart3 size={18} />
               Insights
             </TabsTrigger>
             <TabsTrigger 
               value="achievements" 
-              className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-gray-900"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-pastel-coral data-[state=active]:to-pastel-pink data-[state=active]:text-white data-[state=active]:shadow-lg"
             >
-              <Award size={16} />
+              <Award size={18} />
               Achievements
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="today" className="space-y-4">
+          <TabsContent value="today" className="space-y-6">
             {habits.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-gray-400 mb-4">
-                  <CheckSquare size={48} className="mx-auto" />
+              <div className="text-center py-16">
+                <div className="text-pastel-coral mb-6 bg-gradient-to-br from-pastel-coral/20 to-pastel-pink/20 w-24 h-24 rounded-full flex items-center justify-center mx-auto">
+                  <CheckSquare size={48} />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No habits yet</h3>
-                <p className="text-gray-600 mb-4">Get started by adding your first habit</p>
+                <h3 className="text-2xl font-bold text-gray-800 mb-3">No habits yet ✨</h3>
+                <p className="text-gray-600 mb-6 text-lg">Get started by adding your first habit</p>
                 <AddHabitDialog onAddHabit={addHabit} />
               </div>
             ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {habits.map(habit => (
                   <HabitCard
                     key={habit.id}
