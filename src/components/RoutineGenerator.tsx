@@ -57,7 +57,7 @@ const RoutineGenerator: React.FC<RoutineGeneratorProps> = ({ onTaskAdd }) => {
 
   const getCategoryColor = (cat: string) => {
     const colors = {
-      habit: '#A78BFA',
+      habit: '#8B5CF6',
       goal: '#7C3AED',
       routine: '#5B21B6'
     };
@@ -74,59 +74,59 @@ const RoutineGenerator: React.FC<RoutineGeneratorProps> = ({ onTaskAdd }) => {
   };
 
   return (
-    <Card className="p-8 border-2 border-violet-light/30 rounded-2xl bg-gradient-to-br from-white to-violet-light/10 shadow-lg">
+    <Card className="p-8 border-2 border-purple-500/30 rounded-2xl bg-gradient-to-br from-white/95 to-purple-50/50 backdrop-blur-sm shadow-xl">
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-3 bg-violet-medium/20 rounded-full">
-          <Plus className="text-violet-dark" size={24} />
+        <div className="p-3 bg-purple-500/20 rounded-full border border-purple-400/30">
+          <Plus className="text-purple-700" size={24} />
         </div>
-        <h3 className="text-xl font-bold text-gray-dark">Smart Routine Generator ✨</h3>
+        <h3 className="text-xl font-bold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent">Smart Routine Generator ✨</h3>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="task-name" className="text-gray-dark font-semibold">Task Name</Label>
+            <Label htmlFor="task-name" className="text-gray-700 font-semibold">Task Name</Label>
             <Input
               id="task-name"
               value={taskName}
               onChange={(e) => setTaskName(e.target.value)}
               placeholder="e.g., Morning workout 💪"
-              className="border-violet-light/40 focus:border-violet-medium rounded-xl"
+              className="border-purple-300/40 focus:border-purple-500 rounded-xl bg-white/80"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label htmlFor="start-time" className="text-gray-dark font-semibold">Start Time</Label>
+              <Label htmlFor="start-time" className="text-gray-700 font-semibold">Start Time</Label>
               <Input
                 id="start-time"
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className="border-violet-light/40 focus:border-violet-medium rounded-xl"
+                className="border-purple-300/40 focus:border-purple-500 rounded-xl bg-white/80"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="duration" className="text-gray-dark font-semibold">Duration (min)</Label>
+              <Label htmlFor="duration" className="text-gray-700 font-semibold">Duration (min)</Label>
               <Input
                 id="duration"
                 type="number"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
                 placeholder="30"
-                className="border-violet-light/40 focus:border-violet-medium rounded-xl"
+                className="border-purple-300/40 focus:border-purple-500 rounded-xl bg-white/80"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-gray-dark font-semibold">Description (Optional)</Label>
+            <Label htmlFor="description" className="text-gray-700 font-semibold">Description (Optional)</Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Additional details about this task..."
-              className="border-violet-light/40 focus:border-violet-medium rounded-xl resize-none"
+              className="border-purple-300/40 focus:border-purple-500 rounded-xl resize-none bg-white/80"
               rows={2}
             />
           </div>
@@ -134,12 +134,12 @@ const RoutineGenerator: React.FC<RoutineGeneratorProps> = ({ onTaskAdd }) => {
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-gray-dark font-semibold">Category</Label>
+            <Label htmlFor="category" className="text-gray-700 font-semibold">Category</Label>
             <Select value={category} onValueChange={(value) => setCategory(value as any)}>
-              <SelectTrigger className="border-violet-light/40 focus:border-violet-medium rounded-xl">
+              <SelectTrigger className="border-purple-300/40 focus:border-purple-500 rounded-xl bg-white/80">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-violet-light/30">
+              <SelectContent className="rounded-xl border-purple-300/30 bg-white/95 backdrop-blur-sm">
                 <SelectItem value="habit" className="rounded-lg">
                   <div className="flex items-center gap-2">
                     <Repeat size={16} />
@@ -163,12 +163,12 @@ const RoutineGenerator: React.FC<RoutineGeneratorProps> = ({ onTaskAdd }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="recurrence" className="text-gray-dark font-semibold">Recurrence</Label>
+            <Label htmlFor="recurrence" className="text-gray-700 font-semibold">Recurrence</Label>
             <Select value={recurrence} onValueChange={(value) => setRecurrence(value as any)}>
-              <SelectTrigger className="border-violet-light/40 focus:border-violet-medium rounded-xl">
+              <SelectTrigger className="border-purple-300/40 focus:border-purple-500 rounded-xl bg-white/80">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-violet-light/30">
+              <SelectContent className="rounded-xl border-purple-300/30 bg-white/95 backdrop-blur-sm">
                 <SelectItem value="daily">Daily</SelectItem>
                 <SelectItem value="weekly">Weekly</SelectItem>
                 <SelectItem value="monthly">Monthly</SelectItem>
@@ -178,12 +178,12 @@ const RoutineGenerator: React.FC<RoutineGeneratorProps> = ({ onTaskAdd }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="priority" className="text-gray-dark font-semibold">Priority</Label>
+            <Label htmlFor="priority" className="text-gray-700 font-semibold">Priority</Label>
             <Select value={priority} onValueChange={(value) => setPriority(value as any)}>
-              <SelectTrigger className="border-violet-light/40 focus:border-violet-medium rounded-xl">
+              <SelectTrigger className="border-purple-300/40 focus:border-purple-500 rounded-xl bg-white/80">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-violet-light/30">
+              <SelectContent className="rounded-xl border-purple-300/30 bg-white/95 backdrop-blur-sm">
                 <SelectItem value="high">High</SelectItem>
                 <SelectItem value="medium">Medium</SelectItem>
                 <SelectItem value="low">Low</SelectItem>
@@ -193,7 +193,7 @@ const RoutineGenerator: React.FC<RoutineGeneratorProps> = ({ onTaskAdd }) => {
 
           <Button 
             onClick={handleAddTask}
-            className="w-full bg-gradient-to-r from-violet-medium to-violet-dark hover:from-violet-dark hover:to-violet-darker text-white rounded-xl py-3 font-semibold shadow-lg mt-4"
+            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl py-3 font-semibold shadow-lg mt-4 border-0"
           >
             <Plus size={18} className="mr-2" />
             Add to Routine

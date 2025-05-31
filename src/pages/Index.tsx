@@ -8,12 +8,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import HabitCard from '@/components/HabitCard';
 import MonthlyView from '@/components/MonthlyView';
 import ProgressInsights from '@/components/ProgressInsights';
-import AchievementBadges from '@/components/AchievementBadges';
+import SettingsPanel from '@/components/SettingsPanel';
 import AddHabitDialog from '@/components/AddHabitDialog';
 import RoutineGenerator from '@/components/RoutineGenerator';
 import TimeBlockView from '@/components/TimeBlockView';
 import { HabitCategory } from '@/types/habit';
-import { Calendar, BarChart3, Award, CheckSquare, Clock } from 'lucide-react';
+import { Calendar, BarChart3, Settings, CheckSquare, Clock } from 'lucide-react';
 
 const Index = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -171,56 +171,56 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-light/20 via-white to-gray-darker/90">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black">
       <div className="max-w-6xl mx-auto p-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-dark to-gray-darker bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
               GoalFlow ✨
             </h1>
-            <p className="text-gray-medium text-lg font-medium">Build better habits, one day at a time</p>
+            <p className="text-purple-200 text-lg font-medium">Build better habits, one day at a time</p>
           </div>
           <AddHabitDialog onAddHabit={addHabit} />
         </div>
 
         {/* Main Content */}
         <Tabs defaultValue="routine" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-5 bg-white/80 backdrop-blur-sm border-2 border-violet-light/30 rounded-2xl p-2 shadow-lg">
+          <TabsList className="grid w-full grid-cols-5 bg-white/10 backdrop-blur-sm border-2 border-purple-500/20 rounded-2xl p-2 shadow-lg">
             <TabsTrigger 
               value="routine" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-medium data-[state=active]:to-violet-dark data-[state=active]:text-white data-[state=active]:shadow-lg"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
             >
               <Clock size={18} />
               Routine
             </TabsTrigger>
             <TabsTrigger 
               value="today" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-medium data-[state=active]:to-violet-dark data-[state=active]:text-white data-[state=active]:shadow-lg"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
             >
               <CheckSquare size={18} />
               Habits
             </TabsTrigger>
             <TabsTrigger 
               value="monthly" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-medium data-[state=active]:to-violet-dark data-[state=active]:text-white data-[state=active]:shadow-lg"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
             >
               <Calendar size={18} />
               Monthly
             </TabsTrigger>
             <TabsTrigger 
               value="insights" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-medium data-[state=active]:to-violet-dark data-[state=active]:text-white data-[state=active]:shadow-lg"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
             >
               <BarChart3 size={18} />
               Insights
             </TabsTrigger>
             <TabsTrigger 
-              value="achievements" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-medium data-[state=active]:to-violet-dark data-[state=active]:text-white data-[state=active]:shadow-lg"
+              value="settings" 
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
             >
-              <Award size={18} />
-              Achievements
+              <Settings size={18} />
+              Settings
             </TabsTrigger>
           </TabsList>
 
@@ -236,11 +236,11 @@ const Index = () => {
           <TabsContent value="today" className="space-y-6">
             {habits.length === 0 ? (
               <div className="text-center py-16">
-                <div className="text-violet-medium mb-6 bg-gradient-to-br from-violet-light/20 to-violet-medium/20 w-24 h-24 rounded-full flex items-center justify-center mx-auto">
+                <div className="text-purple-300 mb-6 bg-gradient-to-br from-purple-500/20 to-blue-500/20 w-24 h-24 rounded-full flex items-center justify-center mx-auto border-2 border-purple-400/30">
                   <CheckSquare size={48} />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-dark mb-3">No habits yet ✨</h3>
-                <p className="text-gray-medium mb-6 text-lg">Get started by adding your first habit</p>
+                <h3 className="text-2xl font-bold text-white mb-3">No habits yet ✨</h3>
+                <p className="text-purple-200 mb-6 text-lg">Get started by adding your first habit</p>
                 <AddHabitDialog onAddHabit={addHabit} />
               </div>
             ) : (
@@ -268,8 +268,8 @@ const Index = () => {
             <ProgressInsights habits={habits} />
           </TabsContent>
 
-          <TabsContent value="achievements">
-            <AchievementBadges achievements={achievements} />
+          <TabsContent value="settings">
+            <SettingsPanel />
           </TabsContent>
         </Tabs>
       </div>
