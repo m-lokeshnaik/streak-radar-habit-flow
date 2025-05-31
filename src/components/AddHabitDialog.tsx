@@ -38,33 +38,33 @@ const AddHabitDialog: React.FC<AddHabitDialogProps> = ({ onAddHabit }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-gradient-to-r from-pastel-coral to-pastel-pink hover:from-pastel-pink hover:to-pastel-coral text-white border-none rounded-2xl px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+        <Button className="bg-gradient-to-r from-violet-medium to-violet-dark hover:from-violet-dark hover:to-violet-darker text-white border-none rounded-2xl px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
           <Plus size={18} className="mr-2" />
           Add Habit
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md border-2 border-pastel-gray-medium/30 rounded-2xl bg-white shadow-2xl">
+      <DialogContent className="sm:max-w-md border-2 border-violet-light/30 rounded-2xl bg-white shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="text-gray-800 text-xl font-bold">Add New Habit ✨</DialogTitle>
+          <DialogTitle className="text-gray-dark text-xl font-bold">Add New Habit ✨</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6 mt-4">
           <div className="space-y-3">
-            <Label htmlFor="habit-name" className="text-gray-700 font-semibold">Habit Name</Label>
+            <Label htmlFor="habit-name" className="text-gray-dark font-semibold">Habit Name</Label>
             <Input
               id="habit-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., Drink 8 glasses of water 💧"
-              className="border-pastel-gray-medium/40 focus:border-pastel-coral rounded-xl py-3 px-4 font-medium"
+              className="border-violet-light/40 focus:border-violet-medium rounded-xl py-3 px-4 font-medium"
             />
           </div>
           <div className="space-y-3">
-            <Label htmlFor="habit-category" className="text-gray-700 font-semibold">Category</Label>
+            <Label htmlFor="habit-category" className="text-gray-dark font-semibold">Category</Label>
             <Select value={category} onValueChange={(value) => setCategory(value as HabitCategory)}>
-              <SelectTrigger className="border-pastel-gray-medium/40 focus:border-pastel-coral rounded-xl py-3 px-4">
+              <SelectTrigger className="border-violet-light/40 focus:border-violet-medium rounded-xl py-3 px-4">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-pastel-gray-medium/30">
+              <SelectContent className="rounded-xl border-violet-light/30">
                 {categories.map(cat => (
                   <SelectItem key={cat.value} value={cat.value} className="rounded-lg font-medium">
                     {cat.emoji} {cat.label}
@@ -78,13 +78,13 @@ const AddHabitDialog: React.FC<AddHabitDialogProps> = ({ onAddHabit }) => {
               type="button" 
               variant="outline" 
               onClick={() => setOpen(false)}
-              className="flex-1 border-pastel-gray-medium/40 text-gray-700 hover:bg-gray-50 rounded-xl py-3 font-semibold"
+              className="flex-1 border-violet-light/40 text-gray-dark hover:bg-gray-light rounded-xl py-3 font-semibold"
             >
               Cancel
             </Button>
             <Button 
               type="submit"
-              className="flex-1 bg-gradient-to-r from-pastel-coral to-pastel-pink hover:from-pastel-pink hover:to-pastel-coral text-white rounded-xl py-3 font-semibold shadow-lg"
+              className="flex-1 bg-gradient-to-r from-violet-medium to-violet-dark hover:from-violet-dark hover:to-violet-darker text-white rounded-xl py-3 font-semibold shadow-lg"
             >
               Add Habit
             </Button>

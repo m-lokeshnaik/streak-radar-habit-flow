@@ -28,21 +28,21 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, onToggle }) => {
   };
 
   return (
-    <Card className="p-6 border-2 border-pastel-gray-medium/30 hover:border-pastel-coral/40 transition-all duration-300 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl">
+    <Card className="p-6 border-2 border-violet-light/30 hover:border-violet-medium/40 transition-all duration-300 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => onToggle(habit.id)}
-            className={`p-0 h-10 w-10 rounded-full hover:bg-pastel-blue/20 transition-all duration-300 ${
-              isCompleted ? 'text-emerald-500 bg-emerald-50' : 'text-gray-400 hover:text-pastel-coral'
+            className={`p-0 h-10 w-10 rounded-full hover:bg-violet-light/20 transition-all duration-300 ${
+              isCompleted ? 'text-emerald-500 bg-emerald-50' : 'text-gray-medium hover:text-violet-dark'
             }`}
           >
             {isCompleted ? <CheckCircle2 size={28} /> : <Circle size={28} />}
           </Button>
           <h3 className={`font-semibold text-lg ${
-            isCompleted ? 'line-through text-gray-500' : 'text-gray-800'
+            isCompleted ? 'line-through text-gray-medium' : 'text-gray-dark'
           }`}>
             {habit.name}
           </h3>
@@ -53,13 +53,13 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, onToggle }) => {
       </div>
       
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 text-sm text-gray-600">
+        <div className="flex items-center gap-3 text-sm text-gray-medium">
           <div className="flex items-center gap-2 bg-orange-50 px-3 py-2 rounded-full">
             <Flame size={18} className="text-orange-500" />
             <span className="font-medium">{habit.streak} day streak</span>
           </div>
         </div>
-        <div className="text-sm text-gray-500 bg-gray-50 px-3 py-2 rounded-full">
+        <div className="text-sm text-gray-medium bg-violet-light/20 px-3 py-2 rounded-full">
           <span className="font-medium">{habit.completedDates.length}</span> completions
         </div>
       </div>

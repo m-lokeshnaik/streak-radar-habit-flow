@@ -66,15 +66,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom pastel colors for GoalFlow
-				pastel: {
-					blue: '#A7F3D0',
-					pink: '#F9A8D4',
-					coral: '#F472B6',
-					gray: {
-						light: '#F1F5F9',
-						medium: '#D1D5DB'
-					}
+				// Updated violet to black gradient theme
+				violet: {
+					light: '#DDD6FE',
+					medium: '#A78BFA',
+					dark: '#7C3AED',
+					darker: '#5B21B6'
+				},
+				gray: {
+					light: '#F8FAFC',
+					medium: '#94A3B8',
+					dark: '#1E293B',
+					darker: '#0F172A'
 				}
 			},
 			borderRadius: {
