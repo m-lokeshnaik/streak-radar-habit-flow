@@ -171,53 +171,53 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black dark:from-gray-900 dark:via-gray-800 dark:to-black">
       <div className="max-w-6xl mx-auto p-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent dark:from-gray-100 dark:to-gray-300">
               GoalFlow ✨
             </h1>
-            <p className="text-purple-200 text-lg font-medium">Build better habits, one day at a time</p>
+            <p className="text-purple-200 text-lg font-medium dark:text-gray-300">Build better habits, one day at a time</p>
           </div>
           <AddHabitDialog onAddHabit={addHabit} />
         </div>
 
         {/* Main Content */}
         <Tabs defaultValue="routine" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-5 bg-white/10 backdrop-blur-sm border-2 border-purple-500/20 rounded-2xl p-2 shadow-lg">
+          <TabsList className="grid w-full grid-cols-5 bg-white/10 backdrop-blur-sm border-2 border-purple-500/20 rounded-2xl p-2 shadow-lg dark:bg-gray-800/50 dark:border-gray-600/20">
             <TabsTrigger 
               value="routine" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
             >
               <Clock size={18} />
               Routine
             </TabsTrigger>
             <TabsTrigger 
               value="today" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
             >
               <CheckSquare size={18} />
               Habits
             </TabsTrigger>
             <TabsTrigger 
               value="monthly" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
             >
               <Calendar size={18} />
               Monthly
             </TabsTrigger>
             <TabsTrigger 
               value="insights" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
             >
               <BarChart3 size={18} />
               Insights
             </TabsTrigger>
             <TabsTrigger 
               value="settings" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80"
+              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
             >
               <Settings size={18} />
               Settings
@@ -236,11 +236,11 @@ const Index = () => {
           <TabsContent value="today" className="space-y-6">
             {habits.length === 0 ? (
               <div className="text-center py-16">
-                <div className="text-purple-300 mb-6 bg-gradient-to-br from-purple-500/20 to-blue-500/20 w-24 h-24 rounded-full flex items-center justify-center mx-auto border-2 border-purple-400/30">
+                <div className="text-purple-300 mb-6 bg-gradient-to-br from-purple-500/20 to-blue-500/20 w-24 h-24 rounded-full flex items-center justify-center mx-auto border-2 border-purple-400/30 dark:text-gray-300 dark:from-gray-600/20 dark:to-gray-700/20 dark:border-gray-500/30">
                   <CheckSquare size={48} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">No habits yet ✨</h3>
-                <p className="text-purple-200 mb-6 text-lg">Get started by adding your first habit</p>
+                <h3 className="text-2xl font-bold text-white mb-3 dark:text-gray-100">No habits yet ✨</h3>
+                <p className="text-purple-200 mb-6 text-lg dark:text-gray-300">Get started by adding your first habit</p>
                 <AddHabitDialog onAddHabit={addHabit} />
               </div>
             ) : (
