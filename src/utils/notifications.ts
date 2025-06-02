@@ -1,15 +1,20 @@
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { PushNotifications } from '@capacitor/push-notifications';
+import { Capacitor } from '@capacitor/core';
 import { RoutineTask } from '@/types/routine';
 
 export async function requestNotificationPermissions() {
   try {
-    // Request permission for push notifications
-    await PushNotifications.requestPermissions();
-    await PushNotifications.register();
+    if (Capacitor.isPluginAvailable('PushNotifications')) {
+      // Request permission for push notifications
+      await PushNotifications.requestPermissions();
+      await PushNotifications.register();
+    }
 
-    // Request permission for local notifications
-    await LocalNotifications.requestPermissions();
+    if (Capacitor.isPluginAvailable('LocalNotifications')) {
+      // Request permission for local notifications
+      await LocalNotifications.requestPermissions();
+    }
     
     return true;
   } catch (error) {
@@ -20,6 +25,10 @@ export async function requestNotificationPermissions() {
 
 export async function scheduleRoutineNotification(task: RoutineTask) {
   try {
+    if (!Capacitor.isPluginAvailable('LocalNotifications')) {
+      return;
+    }
+
     const [hours, minutes] = task.startTime.split(':').map(Number);
     const scheduledTime = new Date();
     scheduledTime.setHours(hours, minutes, 0);
@@ -48,6 +57,10 @@ export async function scheduleRoutineNotification(task: RoutineTask) {
 
 export async function cancelRoutineNotification(taskId: string) {
   try {
+    if (!Capacitor.isPluginAvailable('LocalNotifications')) {
+      return;
+    }
+
     await LocalNotifications.cancel({
       notifications: [{ id: parseInt(taskId) }]
     });
@@ -58,6 +71,10 @@ export async function cancelRoutineNotification(taskId: string) {
 
 // Set up push notification handlers
 export function setupPushNotifications() {
+  if (!Capacitor.isPluginAvailable('PushNotifications')) {
+    return;
+  }
+
   PushNotifications.addListener('registration', (token) => {
     console.log('Push registration success:', token.value);
   });

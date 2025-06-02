@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { App as CapacitorApp } from '@capacitor/app';
+import { App as CapacitorApp, Capacitor } from '@capacitor/app';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar } from '@capacitor/status-bar';
 import { useEffect } from 'react';
@@ -19,21 +19,27 @@ const App = () => {
   }, []);
 
   const initializeApp = async () => {
-    // Hide the splash screen
-    await SplashScreen.hide();
+    if (Capacitor.isPluginAvailable('SplashScreen')) {
+      // Hide the splash screen
+      await SplashScreen.hide();
+    }
 
-    // Set status bar style
-    await StatusBar.setBackgroundColor({ color: '#7C3AED' });
-    await StatusBar.setStyle({ style: 'light' });
+    if (Capacitor.isPluginAvailable('StatusBar')) {
+      // Set status bar style
+      await StatusBar.setBackgroundColor({ color: '#7C3AED' });
+      await StatusBar.setStyle({ style: 'light' });
+    }
 
-    // Handle back button
-    CapacitorApp.addListener('backButton', ({ canGoBack }) => {
-      if (!canGoBack) {
-        CapacitorApp.exitApp();
-      } else {
-        window.history.back();
-      }
-    });
+    if (Capacitor.isPluginAvailable('App')) {
+      // Handle back button
+      CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+        if (!canGoBack) {
+          CapacitorApp.exitApp();
+        } else {
+          window.history.back();
+        }
+      });
+    }
   };
 
   return (
