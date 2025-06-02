@@ -1,15 +1,32 @@
-
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.2d34a23878dd4acca210d00094c54050',
-  appName: 'streak-radar-habit-flow',
+  appId: 'app.lovable.streakradar',
+  appName: 'Streak Radar',
   webDir: 'dist',
   server: {
-    url: 'https://2d34a238-78dd-4acc-a210-d00094c54050.lovableproject.com?forceHideBadge=true',
-    cleartext: true
+    androidScheme: 'https'
   },
-  bundledWebRuntime: false
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 2000,
+      launchAutoHide: true,
+      backgroundColor: "#7C3AED",
+      androidSplashResourceName: "splash",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: true,
+      androidSpinnerStyle: "large",
+      spinnerColor: "#DDD6FE",
+    },
+    LocalNotifications: {
+      smallIcon: "ic_stat_icon_config_sample",
+      iconColor: "#7C3AED",
+      sound: "beep.wav",
+    },
+    PushNotifications: {
+      presentationOptions: ["badge", "sound", "alert"],
+    }
+  }
 };
 
 export default config;
