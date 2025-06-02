@@ -1,280 +1,48 @@
+// Update the imports at the top of the file
+import { useEffect } from 'react';
+import { HabitStorage, AchievementStorage, RoutineStorage } from '@/utils/storage';
+import { requestNotificationPermissions, setupPushNotifications, scheduleRoutineNotification } from '@/utils/notifications';
+import OfflineIndicator from '@/components/OfflineIndicator';
 
-import React, { useState, useEffect } from 'react';
-import { Habit, Achievement } from '@/types/habit';
-import { RoutineTask } from '@/types/routine';
-import { calculateStreak, checkAchievements } from '@/utils/habitUtils';
-import { format } from 'date-fns';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import HabitCard from '@/components/HabitCard';
-import MonthlyView from '@/components/MonthlyView';
-import ProgressInsights from '@/components/ProgressInsights';
-import SettingsPanel from '@/components/SettingsPanel';
-import AddHabitDialog from '@/components/AddHabitDialog';
-import RoutineGenerator from '@/components/RoutineGenerator';
-import TimeBlockView from '@/components/TimeBlockView';
-import { HabitCategory } from '@/types/habit';
-import { Calendar, BarChart3, Settings, CheckSquare, Clock } from 'lucide-react';
+// Add to the existing Index component, just before the return statement:
+useEffect(() => {
+  const initializeApp = async () => {
+    // Load data from storage
+    const savedHabits = await HabitStorage.get();
+    if (savedHabits) setHabits(savedHabits);
 
-const Index = () => {
-  const [habits, setHabits] = useState<Habit[]>([]);
-  const [routineTasks, setRoutineTasks] = useState<RoutineTask[]>([]);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [achievements, setAchievements] = useState<Achievement[]>([
-    {
-      id: 'first-habit',
-      name: 'Getting Started',
-      description: 'Create your first habit',
-      icon: '🎯',
-      unlocked: false
-    },
-    {
-      id: 'week-warrior',
-      name: 'Week Warrior',
-      description: 'Maintain a 7-day streak',
-      icon: '🔥',
-      unlocked: false
-    },
-    {
-      id: 'perfect-day',
-      name: 'Perfect Day',
-      description: 'Complete all habits in a day',
-      icon: '⭐',
-      unlocked: false
-    },
-    {
-      id: 'month-master',
-      name: 'Month Master',
-      description: 'Maintain a 30-day streak',
-      icon: '👑',
-      unlocked: false
-    },
-    {
-      id: 'routine-master',
-      name: 'Routine Master',
-      description: 'Create your first daily routine',
-      icon: '📅',
-      unlocked: false
-    }
-  ]);
+    const savedAchievements = await AchievementStorage.get();
+    if (savedAchievements) setAchievements(savedAchievements);
 
-  // Load data from localStorage on mount
-  useEffect(() => {
-    const savedHabits = localStorage.getItem('habits');
-    const savedRoutineTasks = localStorage.getItem('routineTasks');
-    const savedAchievements = localStorage.getItem('achievements');
-    
-    if (savedHabits) {
-      setHabits(JSON.parse(savedHabits));
-    }
-    
-    if (savedRoutineTasks) {
-      setRoutineTasks(JSON.parse(savedRoutineTasks));
-    }
-    
-    if (savedAchievements) {
-      setAchievements(JSON.parse(savedAchievements));
-    }
-  }, []);
+    const savedRoutineTasks = await RoutineStorage.get();
+    if (savedRoutineTasks) setRoutineTasks(savedRoutineTasks);
 
-  // Save to localStorage whenever data changes
-  useEffect(() => {
-    localStorage.setItem('habits', JSON.stringify(habits));
-  }, [habits]);
-
-  useEffect(() => {
-    localStorage.setItem('routineTasks', JSON.stringify(routineTasks));
-  }, [routineTasks]);
-
-  useEffect(() => {
-    localStorage.setItem('achievements', JSON.stringify(achievements));
-  }, [achievements]);
-
-  const addHabit = (name: string, category: HabitCategory) => {
-    const newHabit: Habit = {
-      id: Date.now().toString(),
-      name,
-      category,
-      streak: 0,
-      completedDates: [],
-      createdAt: new Date().toISOString(),
-      target: 1
-    };
-    
-    const updatedHabits = [...habits, newHabit];
-    setHabits(updatedHabits);
-    
-    // Check for new achievements
-    const updatedAchievements = checkAchievements(updatedHabits, achievements);
-    setAchievements(updatedAchievements);
+    // Set up notifications
+    await requestNotificationPermissions();
+    setupPushNotifications();
   };
 
-  const addRoutineTask = (task: RoutineTask) => {
-    const updatedTasks = [...routineTasks, task];
-    setRoutineTasks(updatedTasks);
-    
-    // Check for routine master achievement
-    if (updatedTasks.length === 1) {
-      const updatedAchievements = achievements.map(achievement => 
-        achievement.id === 'routine-master' 
-          ? { ...achievement, unlocked: true }
-          : achievement
-      );
-      setAchievements(updatedAchievements);
+  initializeApp();
+}, []);
+
+// Update the save effects
+useEffect(() => {
+  HabitStorage.save(habits);
+}, [habits]);
+
+useEffect(() => {
+  AchievementStorage.save(achievements);
+}, [achievements]);
+
+useEffect(() => {
+  RoutineStorage.save(routineTasks);
+  // Schedule notifications for new tasks
+  routineTasks.forEach(task => {
+    if (task.recurrence && task.recurrence !== 'none') {
+      scheduleRoutineNotification(task);
     }
-  };
+  });
+}, [routineTasks]);
 
-  const toggleHabit = (habitId: string) => {
-    const today = format(new Date(), 'yyyy-MM-dd');
-    
-    setHabits(prevHabits => {
-      const updatedHabits = prevHabits.map(habit => {
-        if (habit.id === habitId) {
-          const isCompleted = habit.completedDates.includes(today);
-          let newCompletedDates;
-          
-          if (isCompleted) {
-            newCompletedDates = habit.completedDates.filter(date => date !== today);
-          } else {
-            newCompletedDates = [...habit.completedDates, today];
-          }
-          
-          const updatedHabit = {
-            ...habit,
-            completedDates: newCompletedDates,
-            streak: calculateStreak(newCompletedDates)
-          };
-          
-          return updatedHabit;
-        }
-        return habit;
-      });
-      
-      const updatedAchievements = checkAchievements(updatedHabits, achievements);
-      setAchievements(updatedAchievements);
-      
-      return updatedHabits;
-    });
-  };
-
-  const toggleRoutineTask = (taskId: string) => {
-    setRoutineTasks(prevTasks => 
-      prevTasks.map(task => 
-        task.id === taskId 
-          ? { ...task, completed: !task.completed }
-          : task
-      )
-    );
-  };
-
-  const deleteRoutineTask = (taskId: string) => {
-    setRoutineTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black dark:from-gray-900 dark:via-gray-800 dark:to-black">
-      <div className="max-w-6xl mx-auto p-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-10">
-          <div className="space-y-2">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent dark:from-gray-100 dark:to-gray-300">
-              GoalFlow ✨
-            </h1>
-            <p className="text-purple-200 text-lg font-medium dark:text-gray-300">Build better habits, one day at a time</p>
-          </div>
-          <AddHabitDialog onAddHabit={addHabit} />
-        </div>
-
-        {/* Main Content */}
-        <Tabs defaultValue="routine" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-5 bg-white/10 backdrop-blur-sm border-2 border-purple-500/20 rounded-2xl p-2 shadow-lg dark:bg-gray-800/50 dark:border-gray-600/20">
-            <TabsTrigger 
-              value="routine" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
-            >
-              <Clock size={18} />
-              Routine
-            </TabsTrigger>
-            <TabsTrigger 
-              value="today" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
-            >
-              <CheckSquare size={18} />
-              Habits
-            </TabsTrigger>
-            <TabsTrigger 
-              value="monthly" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
-            >
-              <Calendar size={18} />
-              Monthly
-            </TabsTrigger>
-            <TabsTrigger 
-              value="insights" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
-            >
-              <BarChart3 size={18} />
-              Insights
-            </TabsTrigger>
-            <TabsTrigger 
-              value="settings" 
-              className="flex items-center gap-2 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-white/80 dark:text-gray-200 dark:data-[state=active]:from-gray-600 dark:data-[state=active]:to-gray-700"
-            >
-              <Settings size={18} />
-              Settings
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="routine" className="space-y-6">
-            <RoutineGenerator onTaskAdd={addRoutineTask} />
-            <TimeBlockView 
-              tasks={routineTasks}
-              onTaskToggle={toggleRoutineTask}
-              onTaskDelete={deleteRoutineTask}
-            />
-          </TabsContent>
-
-          <TabsContent value="today" className="space-y-6">
-            {habits.length === 0 ? (
-              <div className="text-center py-16">
-                <div className="text-purple-300 mb-6 bg-gradient-to-br from-purple-500/20 to-blue-500/20 w-24 h-24 rounded-full flex items-center justify-center mx-auto border-2 border-purple-400/30 dark:text-gray-300 dark:from-gray-600/20 dark:to-gray-700/20 dark:border-gray-500/30">
-                  <CheckSquare size={48} />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-3 dark:text-gray-100">No habits yet ✨</h3>
-                <p className="text-purple-200 mb-6 text-lg dark:text-gray-300">Get started by adding your first habit</p>
-                <AddHabitDialog onAddHabit={addHabit} />
-              </div>
-            ) : (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {habits.map(habit => (
-                  <HabitCard
-                    key={habit.id}
-                    habit={habit}
-                    onToggle={toggleHabit}
-                  />
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="monthly">
-            <MonthlyView
-              habits={habits}
-              currentMonth={currentMonth}
-              onMonthChange={setCurrentMonth}
-            />
-          </TabsContent>
-
-          <TabsContent value="insights">
-            <ProgressInsights habits={habits} />
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <SettingsPanel />
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  );
-};
-
-export default Index;
+// Add OfflineIndicator to the JSX, just before the closing div of the main container
+<OfflineIndicator />
