@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,7 +8,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { App as CapacitorApp } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { useEffect } from 'react';
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -20,26 +21,43 @@ const App = () => {
   }, []);
 
   const initializeApp = async () => {
-    if (Capacitor.isPluginAvailable('SplashScreen')) {
-      // Hide the splash screen
-      await SplashScreen.hide();
-    }
+    console.log(`Initializing app on ${Capacitor.getPlatform()} platform`);
 
-    if (Capacitor.isPluginAvailable('StatusBar')) {
-      // Set status bar style
-      await StatusBar.setBackgroundColor({ color: '#7C3AED' });
-      await StatusBar.setStyle({ style: 'light' });
-    }
+    if (Capacitor.isNativePlatform()) {
+      // Hide splash screen after initialization
+      if (Capacitor.isPluginAvailable('SplashScreen')) {
+        setTimeout(async () => {
+          await SplashScreen.hide();
+        }, 3000);
+      }
 
-    if (Capacitor.isPluginAvailable('App')) {
-      // Handle back button
-      CapacitorApp.addListener('backButton', ({ canGoBack }) => {
-        if (!canGoBack) {
-          CapacitorApp.exitApp();
-        } else {
-          window.history.back();
-        }
-      });
+      // Configure status bar for mobile
+      if (Capacitor.isPluginAvailable('StatusBar')) {
+        await StatusBar.setBackgroundColor({ color: '#7C3AED' });
+        await StatusBar.setStyle({ style: Style.Light });
+        await StatusBar.setOverlaysWebView({ overlay: false });
+      }
+
+      // Handle Android back button
+      if (Capacitor.isPluginAvailable('App')) {
+        CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+          if (!canGoBack) {
+            CapacitorApp.exitApp();
+          } else {
+            window.history.back();
+          }
+        });
+
+        // Handle app state changes
+        CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+          console.log('App state changed. Is active?', isActive);
+        });
+
+        // Handle app URL open (for deep linking)
+        CapacitorApp.addListener('appUrlOpen', (event) => {
+          console.log('App opened with URL:', event.url);
+        });
+      }
     }
   };
 

@@ -1,3 +1,4 @@
+
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
@@ -5,15 +6,32 @@ import { RoutineTask } from '@/types/routine';
 
 export async function requestNotificationPermissions() {
   try {
-    if (Capacitor.isPluginAvailable('PushNotifications')) {
-      // Request permission for push notifications
-      await PushNotifications.requestPermissions();
-      await PushNotifications.register();
-    }
+    console.log(`Running on ${Capacitor.getPlatform()} platform`);
+    
+    if (Capacitor.isNativePlatform()) {
+      // Request push notification permissions for native platforms
+      if (Capacitor.isPluginAvailable('PushNotifications')) {
+        const result = await PushNotifications.requestPermissions();
+        console.log('Push notification permissions:', result);
+        
+        if (result.receive === 'granted') {
+          await PushNotifications.register();
+        }
+      }
 
-    if (Capacitor.isPluginAvailable('LocalNotifications')) {
-      // Request permission for local notifications
-      await LocalNotifications.requestPermissions();
+      // Request local notification permissions
+      if (Capacitor.isPluginAvailable('LocalNotifications')) {
+        const result = await LocalNotifications.requestPermissions();
+        console.log('Local notification permissions:', result);
+      }
+    } else {
+      console.log('Running on web platform - native features disabled');
+      
+      // For web, try to request notification permissions using web API
+      if ('Notification' in window) {
+        const permission = await Notification.requestPermission();
+        console.log('Web notification permission:', permission);
+      }
     }
     
     return true;
@@ -25,7 +43,8 @@ export async function requestNotificationPermissions() {
 
 export async function scheduleRoutineNotification(task: RoutineTask) {
   try {
-    if (!Capacitor.isPluginAvailable('LocalNotifications')) {
+    if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('LocalNotifications')) {
+      console.log('Local notifications not available on this platform');
       return;
     }
 
@@ -40,7 +59,7 @@ export async function scheduleRoutineNotification(task: RoutineTask) {
 
     await LocalNotifications.schedule({
       notifications: [{
-        title: 'Routine Reminder',
+        title: 'Streak Radar Reminder',
         body: `Time for: ${task.name}`,
         id: parseInt(task.id),
         schedule: { at: scheduledTime },
@@ -50,6 +69,8 @@ export async function scheduleRoutineNotification(task: RoutineTask) {
         extra: null
       }]
     });
+
+    console.log(`Notification scheduled for ${task.name} at ${task.startTime}`);
   } catch (error) {
     console.error('Error scheduling notification:', error);
   }
@@ -57,7 +78,7 @@ export async function scheduleRoutineNotification(task: RoutineTask) {
 
 export async function cancelRoutineNotification(taskId: string) {
   try {
-    if (!Capacitor.isPluginAvailable('LocalNotifications')) {
+    if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('LocalNotifications')) {
       return;
     }
 
@@ -69,9 +90,9 @@ export async function cancelRoutineNotification(taskId: string) {
   }
 }
 
-// Set up push notification handlers
 export function setupPushNotifications() {
-  if (!Capacitor.isPluginAvailable('PushNotifications')) {
+  if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('PushNotifications')) {
+    console.log('Push notifications not available on this platform');
     return;
   }
 
@@ -89,5 +110,22 @@ export function setupPushNotifications() {
 
   PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
     console.log('Push notification action performed:', notification);
+    // You could navigate to specific screens based on notification data
   });
+}
+
+// FCM token management for future server integration
+export async function getFCMToken(): Promise<string | null> {
+  try {
+    if (!Capacitor.isNativePlatform()) {
+      return null;
+    }
+
+    // This would be used with Firebase Cloud Messaging
+    // For now, we'll return a placeholder
+    return 'fcm_token_placeholder';
+  } catch (error) {
+    console.error('Error getting FCM token:', error);
+    return null;
+  }
 }

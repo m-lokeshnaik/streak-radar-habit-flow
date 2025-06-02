@@ -1,3 +1,4 @@
+
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
@@ -5,11 +6,17 @@ const config: CapacitorConfig = {
   appName: 'Streak Radar',
   webDir: 'dist',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    cleartext: true
+  },
+  android: {
+    allowMixedContent: true,
+    captureInput: true,
+    webContentsDebuggingEnabled: false
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 2000,
+      launchShowDuration: 3000,
       launchAutoHide: true,
       backgroundColor: "#7C3AED",
       androidSplashResourceName: "splash",
@@ -25,6 +32,10 @@ const config: CapacitorConfig = {
     },
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"],
+    },
+    StatusBar: {
+      style: "light",
+      backgroundColor: "#7C3AED"
     }
   }
 };

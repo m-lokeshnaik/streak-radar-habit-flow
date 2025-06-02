@@ -1,7 +1,11 @@
+
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">Streak Radar</string>
     <string name="title_activity_main">Streak Radar</string>
     <string name="package_name">app.lovable.streakradar</string>
     <string name="custom_url_scheme">app.lovable.streakradar</string>
+    <string name="app_description">Build lasting habits with Streak Radar</string>
+    <string name="notification_channel_name">Habit Reminders</string>
+    <string name="notification_channel_description">Notifications for habit tracking and reminders</string>
 </resources>
