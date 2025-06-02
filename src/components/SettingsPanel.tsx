@@ -3,16 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Settings, Bell, Palette, Moon, Sun, Minimize } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const SettingsPanel: React.FC = () => {
   const [notifications, setNotifications] = useState(true);
-  const [theme, setTheme] = useState<'light' | 'dark' | 'minimal'>('light');
-  const [reminderTime, setReminderTime] = useState('09:00');
   const [weeklyReports, setWeeklyReports] = useState(true);
+  const { theme, setTheme } = useTheme();
 
   // Load settings from localStorage on mount
   useEffect(() => {
@@ -20,8 +19,6 @@ const SettingsPanel: React.FC = () => {
     if (savedSettings) {
       const settings = JSON.parse(savedSettings);
       setNotifications(settings.notifications ?? true);
-      setTheme(settings.theme ?? 'light');
-      setReminderTime(settings.reminderTime ?? '09:00');
       setWeeklyReports(settings.weeklyReports ?? true);
     }
   }, []);
@@ -30,12 +27,10 @@ const SettingsPanel: React.FC = () => {
   useEffect(() => {
     const settings = {
       notifications,
-      theme,
-      reminderTime,
       weeklyReports
     };
     localStorage.setItem('goalflow-settings', JSON.stringify(settings));
-  }, [notifications, theme, reminderTime, weeklyReports]);
+  }, [notifications, weeklyReports]);
 
   const getThemeIcon = (themeType: string) => {
     const icons = {
@@ -68,27 +63,6 @@ const SettingsPanel: React.FC = () => {
               onCheckedChange={setNotifications}
               className="data-[state=checked]:bg-purple-600"
             />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Label className="text-gray-700 font-semibold">Daily Reminder Time</Label>
-              <p className="text-sm text-gray-500">When to send your daily habit reminder</p>
-            </div>
-            <Select value={reminderTime} onValueChange={setReminderTime}>
-              <SelectTrigger className="w-32 border-purple-300/40 focus:border-purple-500 rounded-xl bg-white/80">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="rounded-xl border-purple-300/30 bg-white/95 backdrop-blur-sm">
-                <SelectItem value="07:00">7:00 AM</SelectItem>
-                <SelectItem value="08:00">8:00 AM</SelectItem>
-                <SelectItem value="09:00">9:00 AM</SelectItem>
-                <SelectItem value="10:00">10:00 AM</SelectItem>
-                <SelectItem value="18:00">6:00 PM</SelectItem>
-                <SelectItem value="19:00">7:00 PM</SelectItem>
-                <SelectItem value="20:00">8:00 PM</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
 
           <div className="flex items-center justify-between">
