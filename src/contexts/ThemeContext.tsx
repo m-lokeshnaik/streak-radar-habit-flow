@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type Theme = 'light' | 'dark' | 'minimal';
+type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
@@ -23,7 +23,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('goalflow-theme') as Theme;
-    if (savedTheme) {
+    if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
       setThemeState(savedTheme);
       applyTheme(savedTheme);
     }
@@ -39,7 +39,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const root = document.documentElement;
     
     // Remove existing theme classes
-    root.classList.remove('light', 'dark', 'minimal');
+    root.classList.remove('light', 'dark');
     
     // Apply new theme
     root.classList.add(theme);
@@ -49,10 +49,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       case 'dark':
         root.style.setProperty('--background', '222.2 84% 4.9%');
         root.style.setProperty('--foreground', '210 40% 98%');
-        break;
-      case 'minimal':
-        root.style.setProperty('--background', '0 0% 98%');
-        root.style.setProperty('--foreground', '0 0% 10%');
         break;
       default: // light
         root.style.setProperty('--background', '0 0% 100%');
