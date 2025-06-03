@@ -1,6 +1,40 @@
-
-import { Habit, HabitEntry, Achievement, HabitStats } from '@/types/habit';
+import { Habit, HabitEntry, Achievement, HabitStats, HabitCategory } from '@/types/habit';
 import { format, isToday, startOfMonth, endOfMonth, eachDayOfInterval, isWithinInterval } from 'date-fns';
+
+export const createHabit = (name: string, category: HabitCategory): Habit => {
+  return {
+    id: Date.now().toString(),
+    name,
+    category,
+    streak: 0,
+    completedDates: [],
+    createdAt: new Date().toISOString(),
+    target: 1,
+    unit: undefined
+  };
+};
+
+export const toggleHabitCompletion = (habit: Habit): Habit => {
+  const today = format(new Date(), 'yyyy-MM-dd');
+  const isCompleted = habit.completedDates.includes(today);
+  
+  let updatedCompletedDates: string[];
+  if (isCompleted) {
+    // Remove today's date if already completed
+    updatedCompletedDates = habit.completedDates.filter(date => date !== today);
+  } else {
+    // Add today's date if not completed
+    updatedCompletedDates = [...habit.completedDates, today];
+  }
+  
+  const newStreak = calculateStreak(updatedCompletedDates);
+  
+  return {
+    ...habit,
+    completedDates: updatedCompletedDates,
+    streak: newStreak
+  };
+};
 
 export const calculateStreak = (completedDates: string[]): number => {
   if (completedDates.length === 0) return 0;
